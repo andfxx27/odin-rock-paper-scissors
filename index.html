@@ -6,8 +6,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Odin Rock Paper Scissors</title>
     <link rel="stylesheet" href="./css/style.css" />
+    <script src="./js/index.js" defer></script>
   </head>
   <body>
-    <script src="./js/index.js"></script>
+    <div class="computer-container">
+      <p class="computer-score"></p>
+      <!--Image for computer's selection-->
+      <p>Computer</p>
+    </div>
+
+    <div class="player-container">
+      <!--Image for player's selection-->
+      <p>Player</p>
+      <p class="player-score"></p>
+    </div>
+
+    <!--Button for receiving player input-->
+    <p>Choose your move wisely, the computer is sly...</p>
+    <div class="player-input-container">
+      <button id="rock">Rock</button>
+      <button id="paper">Paper</button>
+      <button id="scissors">Scissors</button>
+    </div>
+
+    <div class="result-container">
+      <p class="result-paragraph"></p>
+    </div>
+
+    <button class="hidden" id="btn-replay">Replay</button>
   </body>
 </html>
