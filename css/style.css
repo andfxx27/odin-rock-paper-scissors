@@ -41,7 +41,22 @@ button {
   margin: 32px 0;
 }
 
+.computer-container,
+.player-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  width: 72px;
+}
+
 .computer-score,
 .player-score {
   margin: 8px 0;
+}
+
+.selection-img {
+  width: 48px;
+  height: 48px;
 }
