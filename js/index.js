@@ -6,11 +6,12 @@ const possibleMove = ["Rock", "Paper", "Scissors"];
 const buttons = document.querySelectorAll("button:not(#btn-replay)");
 const btnReplay = document.querySelector("#btn-replay");
 const computerScoreParagraph = document.querySelector(".computer-score");
+const images = document.querySelectorAll("img");
 const playerScoreParagraph = document.querySelector(".player-score");
 const resultParagraph = document.querySelector(".result-paragraph");
 
 // Return winner by checking both computer and player's score
-const checkForWinner = (computerScore, playerScore) => {
+function checkForWinner(computerScore, playerScore) {
   // Winner is the first to reach score of 5
   let winner = "";
   const winningScore = 5;
@@ -21,24 +22,41 @@ const checkForWinner = (computerScore, playerScore) => {
   }
 
   return winner;
-};
+}
 
 // Represent computer move, will return either 1 of possibleMove
 function computerPlay() {
   return possibleMove[Math.floor(Math.random() * 3)];
 }
 
-// Re-render computer and player score on the page
-const displayScore = (computerScore, playerScore) => {
+// Prevent/ let player from clicking selection button
+function toggleSelectionButton(disabled) {
+  buttons.forEach((btn) => {
+    btn.disabled = disabled;
+  });
+}
+
+// Render image's move
+function displayMove(computerMove, playerMove) {
+  images.forEach((img) => {
+    let selection = img.id === "computer-selection" ? computerMove : playerMove;
+    img.src = `./assets/${selection}.png`;
+  });
+}
+
+// Render computer and player score
+function displayScore(computerScore, playerScore) {
   computerScoreParagraph.textContent = computerScore;
   playerScoreParagraph.textContent = playerScore;
-};
+}
 
 // Play out a single rock-paper-scissors game round
-function singleGameRound(playerSelection = "", computerSelection = "") {
+function singleGameRound(computerSelection = "", playerSelection = "") {
   let playerMove = playerSelection.toLowerCase();
   let computerMove = computerSelection.toLowerCase();
   let roundResult = {};
+
+  displayMove(computerMove, playerMove);
 
   if (playerMove === computerMove) {
     roundResult = {
@@ -88,13 +106,17 @@ function singleGameRound(playerSelection = "", computerSelection = "") {
   return roundResult;
 }
 
-const replay = (e) => {
+function replay(e) {
   computerScore = 0;
   playerScore = 0;
   displayScore(computerScore, playerScore);
-  resultParagraph.textContent = "";
+  toggleSelectionButton(false);
   btnReplay.classList.toggle("hidden");
-};
+  images.forEach((img) => {
+    img.src = "./assets/question-mark.png";
+  });
+  resultParagraph.textContent = "";
+}
 
 displayScore(computerScore, playerScore);
 
@@ -103,7 +125,7 @@ btnReplay.addEventListener("click", replay);
 buttons.forEach((button) => {
   button.addEventListener("click", (e) => {
     const computerSelection = computerPlay();
-    const roundResult = singleGameRound(e.target.id, computerSelection);
+    const roundResult = singleGameRound(computerSelection, e.target.id);
 
     playerScore += roundResult.playerScore;
     computerScore += roundResult.computerScore;
@@ -116,6 +138,7 @@ buttons.forEach((button) => {
     }
 
     // Display message accordingly based on the winner & show replay button
+    toggleSelectionButton(true);
     btnReplay.classList.toggle("hidden");
     if (winner === "computer") {
       resultParagraph.textContent =
